@@ -1,12 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Formulario = ({ titulo }) => {
+
+    const [busqueda, guardarBusqueda] = useState({
+        artista: '',
+        cancion: ''
+    })
+
+    const[error, guardarError]= useState(false)
+// desestreucutrar busqueda
+const{artista, cancion} = busqueda;
+
+    // leer comentarios de inputs
+    const actualizarState = e => {
+        guardarBusqueda({
+            ...busqueda,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    //consultando apis 
+    const buscarInformacion = e =>{
+        e.preventDefault()
+        if(artista.trim() === '' || cancion.trim() === ''){
+            guardarError(true)
+            return
+        }
+        guardarError(false)
+        // validacion lista p[asa al componente principal
+    }
     return (
         <div className='bg-info'>
             <div className='container'>
                 <div className='row'>
                     <form
                         className='col card text-white bg-transparent mb-5 pt-5 pb-2'
+                        onSubmit={buscarInformacion}
                     >
                         <fieldset>
 
@@ -22,6 +51,8 @@ const Formulario = ({ titulo }) => {
                                             className='form-control'
                                             name='artista'
                                             placeholder='Nombre Artista'
+                                            onChange={actualizarState}
+                                            value={artista}
                                         />
                                     </div>
                                 </div>
@@ -35,6 +66,8 @@ const Formulario = ({ titulo }) => {
                                             className='form-control'
                                             name='cancion'
                                             placeholder='Nombre Cancion'
+                                            onChange={actualizarState}
+                                            value={cancion}
                                         />
                                     </div>
                                 </div>
